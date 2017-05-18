@@ -87,6 +87,49 @@ app.get('/challenge/leader/consultarReto', function(req, res, next) {
 
 //////////////////////////////////////////////////////////////////
 
+/* Creo un nuevo reto  */
+
+app.post('/challenge/leader/crearReto', function(req, res, next) {
+
+	console.log('Creando un nuevo reto...');
+
+	// Establecer el tipo MIME de la respuesta
+	res.setHeader("Content-Type", "application/json");
+
+	// Consultar las entidades a la base de datos
+	var query = connection.query('INSERT INTO challenge(name_challenge, descrip_challenge, eviden_challenge, point_challenge, due_challenge) VALUES(?, ?, ?, ?, ?)', 
+                                 [req.body.name_challenge, req.body.descrip_challenge, req.body. eviden_challenge , req.body.point_challenge, req.body. due_challenge], function(err, rows) {
+
+		// Verificar si sucedió un error durante la consulta
+		if (err)
+		{
+			console.error(err);
+
+			res.status(500);	// Server Error
+
+			res.json({ "error" : err });
+		}
+		else 
+		{
+			// En caso de éxito
+
+			res.status(200);	// OK
+
+			// Retornar los registros de la entidad
+			res.json({ "Grupos" : rows });
+		}
+	});
+
+});
+
+//////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////
+// Iniciar el servicio a través del puerto elegido 
+/////////////////////////////////////////////////////////////////
+
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
+
+//////////////////////////////////////////////////////////////////
