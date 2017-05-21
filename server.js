@@ -126,7 +126,7 @@ app.post('/challenge/leader/crearReto', function(req, res, next) {
 			res.status(200);	// OK
 
 			// Retornar los registros de la entidad
-			res.json({ "Grupos" : rows });
+			res.json({ "Challenge" : rows });
 		}
 	});
 
@@ -166,6 +166,44 @@ app.get('/challenge/leader/consultarReto/:id_challenge', function(req, res, next
 			res.json({ "Challenge" : rows });
 		}
 	});
+
+});
+
+//////////////////////////////////////////////////////////////////
+
+// Elimino un reto de la base de datos
+
+app.delete('/challenge/leader/EliminarReto/:id_reto', function(req, res, next) {
+ 
+	console.log('Eliminando la informacion de un Reto ...');
+
+	// Establecer el tipo MIME de la respuesta
+	res.setHeader("Content-Type", "application/json");
+ 
+    // Realizo la consulta
+    var query = connection.query('DELETE FROM challenge WHERE id_challenge = ?', 
+    								[req.params.id_challenge], function(err, rows){
+        
+        // Verificar si sucedió un error durante la consulta
+		if (err)
+		{
+			console.error(err);
+
+			res.status(500);	// Server Error
+
+			res.json({ "error" : err });
+		}
+		else 
+		{
+			// En caso de éxito
+
+			res.status(200);	// OK
+
+			// Retornar los registros de la entidad
+			res.json({ "Challenge" : rows });
+		}
+
+    });
 
 });
 
