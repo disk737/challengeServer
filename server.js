@@ -134,6 +134,43 @@ app.post('/challenge/leader/crearReto', function(req, res, next) {
 
 //////////////////////////////////////////////////////////////////
 
+/* Se consultan un reto en especifico */
+
+app.get('/challenge/leader/consultarReto/:id_challenge', function(req, res, next) {
+
+	console.log('Consultando un reto en especifico ...');
+
+	// Establecer el tipo MIME de la respuesta
+	res.setHeader("Content-Type", "application/json");
+
+	// Consultar las entidades a la base de datos
+	var query = connection.query('SELECT * FROM challenge WHERE challenge.id_challenge = ?', 
+                                 [req.params.id_challenge], function(err, rows) {
+
+		// Verificar si sucedió un error durante la consulta
+		if (err)
+		{
+			console.error(err);
+
+			res.status(500);	// Server Error
+
+			res.json({ "error" : err });
+		}
+		else 
+		{
+			// En caso de éxito
+
+			res.status(200);	// OK
+
+			// Retornar los registros de la entidad
+			res.json({ "Challenge" : rows });
+		}
+	});
+
+});
+
+//////////////////////////////////////////////////////////////////
+
 //////////////////////////////////////////////////////////////////
 // Iniciar el servicio a través del puerto elegido 
 /////////////////////////////////////////////////////////////////
