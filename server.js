@@ -108,7 +108,7 @@ app.post('/challenge/leader/crearReto', function(req, res, next) {
 
 	// Consultar las entidades a la base de datos
 	var query = connection.query('INSERT INTO challenge(name_challenge, descrip_challenge, eviden_challenge, point_challenge, due_challenge) VALUES(?, ?, ?, ?, ?)', 
-                                 [req.body.newChallenge.name_challenge, req.body.newChallenge.descrip_challenge, req.body.newChallenge.eviden_challenge , req.body.newChallenge.point_challenge, req.body.newChallenge.due_challenge], function(err, rows) {
+                                 [req.body.challenge.name_challenge, req.body.challenge.descrip_challenge, req.body.challenge.eviden_challenge , req.body.challenge.point_challenge, req.body.challenge.due_challenge], function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
 		if (err)
@@ -208,6 +208,44 @@ app.delete('/challenge/leader/EliminarReto/:id_reto', function(req, res, next) {
 });
 
 //////////////////////////////////////////////////////////////////
+
+// Cambia la informacion de un Reto
+app.put('/challenge/leader/EditarReto/:id_reto', function(req, res, next) {
+ 
+	console.log('Actualizando la informacion de un Reto ...');
+
+	// Establecer el tipo MIME de la respuesta
+	res.setHeader("Content-Type", "application/json");
+ 
+    // Realizo la consulta
+    var query = connection.query('UPDATE challenge SET name_challenge = ?, descrip_challenge = ?, eviden_challenge = ?, point_challenge = ?, due_challenge = ?  WHERE id_challenge = ?', 
+    								[req.body.challenge.name_challenge, req.body.challenge.descrip_challenge, req.body.challenge.eviden_challenge , req.body.challenge.point_challenge, req.body.challenge.due_challenge, req.params.id_challenge], function(err, rows) {
+        
+        // Verificar si sucedió un error durante la consulta
+		if (err)
+		{
+			console.error(err);
+
+			res.status(500);	// Server Error
+
+			res.json({ "error" : err });
+		}
+		else 
+		{
+			// En caso de éxito
+
+			res.status(200);	// OK
+
+			// Retornar los registros de la entidad
+			res.json({ "Challenge" : rows });
+		}
+
+    });
+
+});
+
+//////////////////////////////////////////////////////////////////
+
 
 //////////////////////////////////////////////////////////////////
 // Iniciar el servicio a través del puerto elegido 
