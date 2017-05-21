@@ -108,7 +108,7 @@ app.post('/challenge/leader/crearReto', function(req, res, next) {
 
 	// Consultar las entidades a la base de datos
 	var query = connection.query('INSERT INTO challenge(name_challenge, descrip_challenge, eviden_challenge, point_challenge, due_challenge) VALUES(?, ?, ?, ?, ?)', 
-                                 [req.body.name_challenge, req.body.descrip_challenge, req.body. eviden_challenge , req.body.point_challenge, req.body. due_challenge], function(err, rows) {
+                                 [req.body.data.name_challenge, req.body.data.descrip_challenge, req.body.data.eviden_challenge , req.body.data.point_challenge, req.body.data.due_challenge], function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
 		if (err)
