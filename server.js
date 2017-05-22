@@ -173,7 +173,7 @@ app.get('/challenge/leader/consultarReto/:id_challenge', function(req, res, next
 
 // Elimino un reto de la base de datos
 
-app.delete('/challenge/leader/EliminarReto/:id_reto', function(req, res, next) {
+app.delete('/challenge/leader/EliminarReto/:id_challenge', function(req, res, next) {
  
 	console.log('Eliminando la informacion de un Reto ...');
 
@@ -210,7 +210,7 @@ app.delete('/challenge/leader/EliminarReto/:id_reto', function(req, res, next) {
 //////////////////////////////////////////////////////////////////
 
 // Cambia la informacion de un Reto
-app.put('/challenge/leader/EditarReto/:id_reto', function(req, res, next) {
+app.put('/challenge/leader/EditarReto/:id_challenge', function(req, res, next) {
  
 	console.log('Actualizando la informacion de un Reto ...');
 
