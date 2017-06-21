@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js"
   },
   "author": "Juan Jose Muñoz",
   "license": "ISC",
@@ -12,5 +12,8 @@
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "mysql": "^2.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }
