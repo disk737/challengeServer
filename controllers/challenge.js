@@ -9,15 +9,15 @@
 //////////////////////////////////////////////////////////////////////
 
 // Importo los modulos necesarios
-const connection = require('./DB_Conection');
+const connection = require('../services/DB_connection');
 
 //////////////////////////////////////////////////////////////////
 //       Definicion de las funciones                            //
 //////////////////////////////////////////////////////////////////
 
-// Se consultan todos los retos 
+// GET: Se consultan todos los retos 
 function getChallenge(req, res){
-    console.log('Consultando todos los retos ...');
+    console.log('GET: Consultando todos los retos ...');
 
 	// Establecer el tipo MIME de la respuesta
 	res.setHeader("Content-Type", "application/json");
@@ -30,24 +30,20 @@ function getChallenge(req, res){
 		if (err)
 		{
 			console.error(err);
-			res.status(500);	// Server Error
-			res.json({ "error" : err });
+			res.status(500).json({ "error" : err });	// Server Error	
 		}
 		else 
 		{
-			// En caso de éxito
-			res.status(200);	// OK
-
-			// Retornar los registros de la entidad
-			res.json({ "Challenge" : rows });
+			// En caso de éxito y retorno los registros de la entidad
+			res.status(200).json({ "challenge" : rows });	// OK
 		}
 	});
 
 };
 
-// Se crea un nuevo reto
+// POST: Se crea un nuevo reto
 function setChallenge(req, res){
-    console.log('Creando un nuevo reto...');
+    console.log('POST: Creando un nuevo reto...');
 
 	// Establecer el tipo MIME de la respuesta
 	res.setHeader("Content-Type", "application/json");
@@ -60,23 +56,19 @@ function setChallenge(req, res){
 		if (err)
 		{
 			console.error(err);
-			res.status(500);	// Server Error
-			res.json({ "error" : err });
+			res.status(500).json({ "error" : err });	// Server Error
 		}
 		else 
 		{
-			// En caso de éxito
-			res.status(200);	// OK
-
-			// Retornar los registros de la entidad
-			res.json({ "Challenge" : rows });
+			// En caso de éxito retorno los registros de la entidad
+			res.status(200).json({ "challenge" : rows });	// OK
 		}
 	});
 };
 
-// Se consulta un reto en especifico
+// GET: Se consulta un reto en especifico
 function getChallengeById(req, res){
-    console.log('Consultando un reto en especifico ...');
+    console.log('GET: Consultando un reto en especifico ...');
 
 	// Establecer el tipo MIME de la respuesta
 	res.setHeader("Content-Type", "application/json");
@@ -89,20 +81,19 @@ function getChallengeById(req, res){
 		if (err)
 		{
 			console.error(err);
-			res.status(500);	// Server Error
-			res.json({ "error" : err });
+			res.status(500).json({ "error" : err });	// Server Error
 		}
 		else 
 		{
 			// En caso de éxito retorno los registros de la entidad
-			res.status(200).json({ "Challenge" : rows });;	// OK
+			res.status(200).json({ "challenge" : rows });;	// OK
 		}
 	});
 }
 
-// Se elimina un reto creado
+// DELETE: Se elimina un reto creado
 function deleteChallenge(req, res){
-    console.log('Eliminando la informacion de un Reto ...');
+    console.log('DELETE: Eliminando la informacion de un Reto ...');
 
 	// Establecer el tipo MIME de la respuesta
 	res.setHeader("Content-Type", "application/json");
@@ -120,14 +111,14 @@ function deleteChallenge(req, res){
 		else 
 		{
 			// En caso de éxito y retorno los registros de la entidad
-			res.status(200).json({ "Challenge" : rows });	// OK
+			res.status(200).json({ "challenge" : rows });	// OK
 		}
     });
 }
 
-// Se actualiza la informacion de un reto
+// PUT: Se actualiza la informacion de un reto
 function updateChallenge(req, res){
-    console.log('Actualizando la informacion de un Reto ...');
+    console.log('PUT: Actualizando la informacion de un Reto ...');
 
 	// Establecer el tipo MIME de la respuesta
 	res.setHeader("Content-Type", "application/json");
@@ -145,7 +136,7 @@ function updateChallenge(req, res){
 		else 
 		{
 			// En caso de éxito y retorno los registros de la entidad
-			res.status(200).json({ "Challenge" : rows });	// OK
+			res.status(200).json({ "challenge" : rows });	// OK
 		}
     });
 }

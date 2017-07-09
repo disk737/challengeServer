@@ -16,7 +16,6 @@ const config = require('../config');
 
 //////////////////////////////////////////////////////////////////
 /* Código a ejecutar al iniciar la conexión a la base de datos */
-//var connection = mysql.createConnection(process.env.JAWSDB_URL);
 const connection = mysql.createConnection(config.db);
 
 connection.connect(function(error){

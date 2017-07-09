@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////
-//																	//
-// Codigo Web Services de Memoria Colombia 							//
-// --------------------------------------------------				//
-//																	//
-// @author  Juan Jose Muñoz <disk737@hotmail.com>           		//
-// @version 0.0.2													//
-//																	//
+//																	                                //
+// Codigo Web Services de Memoria Colombia 						            	//
+// --------------------------------------------------			        	//
+//																                                	//
+// @author  Juan Jose Muñoz <disk737@hotmail.com>           		    //
+// @version 0.0.2													                          //
+//																	                                //
 //////////////////////////////////////////////////////////////////////
 
 // Importo las librerias requeridas por la aplicacion
@@ -21,7 +21,7 @@ const app = express();
 // Importo la api que estan en el router creado
 const api = require('./routes')
 
-//app.set('port', (process.env.PORT || 5000));
+// Ingreso la configuracion del puerto
 app.set('port', config.port);
 
 //////////////////////////////////////////////////////////////////

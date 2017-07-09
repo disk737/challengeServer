@@ -4,7 +4,7 @@ module.exports = {
 	
 	port : process.env.PORT || 8080,
 	db : process.env.JAWSDB_URL || {
-   		host: 'localhost',
+   		host: '127.0.0.1',
    		user: 'root',
 		password: 'root',
 		database: 'db_challenge_app',
