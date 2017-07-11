@@ -41,7 +41,14 @@ function decodeToken (token){
 			console.log(config.SECRET_TOKEN);
 
 			// Hago una decodificacion
-			var payLoad = jwt.verify(token, config.SECRET_TOKEN);
+			//var payLoad = jwt.verify(token, config.SECRET_TOKEN);
+			var payLoad;
+			jwt.verify(token, config.SECRET_TOKEN,function(err, decoded) {
+  				console.log(err) // bar
+				console.log(decoded) // bar
+				payLoad = decoded;
+			});
+			
 
 			console.log("Punto de Control Lin 41");
 
