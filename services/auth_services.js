@@ -24,8 +24,6 @@ function isAuth(req, res, next){
 	// Capturo el Token. El token viene con formato => Beader "Token", por eso hay que hacerle split
 	var token = req.headers.authorization.split(" ")[1];
 
-	console.log("Punto de Control Lin 27");
-
 	services.decodeToken(token)
 	// Como es una promesa, se debe incluir
 	.then(response => {
@@ -34,7 +32,7 @@ function isAuth(req, res, next){
 		
 	}) // Es una funcion que se ejecuta si se ha resuelto correctamente
 	.catch(response =>{
-		res.status(response.status)
+		res.status(response.status).json({"message" : response.message});
 	}) // Se ejecuta si ha ocurrido algun error
 
 }

@@ -34,43 +34,21 @@ function decodeToken (token){
     // Defino una promesa, creo que esto es para que se haga de manera asincrona al llamar la funcion.
 	const decode = new Promise((resolve, reject) => {
 
-		try{
-			console.log("Punto de control Lin 38");
+		jwt.verify(token, config.SECRET_TOKEN, function(err, payLoad) {
 
-			console.log(token);
-			console.log(config.SECRET_TOKEN);
-
-			// Hago una decodificacion
-			//var payLoad = jwt.verify(token, config.SECRET_TOKEN);
-			var payLoad;
-			jwt.verify(token, config.SECRET_TOKEN,function(err, decoded) {
-  				console.log(err) // bar
-				console.log(decoded) // bar
-				payLoad = decoded;
-			});
-			
-
-			console.log("Punto de Control Lin 41");
-
-			// Verifico si el Token no ha caducado
-			if (payLoad.exp <= moment().unix()) {
-
+			// Reviso si encuentro un error (Como de expiracion)
+			if (err) {
 				reject({
 					status: 401,
-					message: 'El token ha expirado'
-				})
-			} 
+					message: err.message
+				});
+			}else{
+				resolve(payLoad.sub)
+			}
 
-			// Si llego hasta aqui significa que el token es valido
-			resolve(payLoad.sub)
-
-		} catch(err){
-			reject({
-				status: 500,
-				message: 'Invalid Token'
-			})
-		}
-	})
+		});	
+		
+	});
 
 	// Devuelvo la promesa creada
 	return decode;
