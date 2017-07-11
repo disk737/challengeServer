@@ -35,7 +35,10 @@ function decodeToken (token){
 	const decode = new Promise((resolve, reject) => {
 
 		try{
-			console.log("Punto de control Lin 38")
+			console.log("Punto de control Lin 38");
+
+			console.log(token);
+			console.log(config.SECRET_TOKEN);
 
 			// Hago una decodificacion
 			var payLoad = jwt.verify(token, config.SECRET_TOKEN);
