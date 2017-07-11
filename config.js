@@ -10,6 +10,7 @@ module.exports = {
 		database: 'db_challenge_app',
 		port: 3306
 		},
-	SECRET_TOKEN: 'miclavedetokens' 	// Se supone que sea mas complicada, puede ser un codigo generado
+	SECRET_TOKEN: 'miclavedetokens', 	// Se supone que sea mas complicada, puede ser un codigo generado
+	saltRounds : 10
 
 }

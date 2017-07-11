@@ -20,7 +20,8 @@ const userCtrl = require('../controllers/user');
 // Construyo un enruador (todavia no se para que funciona)
 const api = express.Router();
 
-//var auth = require('../middlewares/auth');
+// Importo el middleware de autenficacion
+var auth = require('../services/auth_services');
 
 //////////////////////////////////////////////////////////////////
 // Definición de las rutas								                  		//
@@ -56,6 +57,15 @@ api.post('/user/ingresarUsuario', userCtrl.signIn);
 // API del Admin           								                  		//
 //////////////////////////////////////////////////////////////////
 
-api.get('/admin/consultarUsuarios', userCtrl.getUsers);
+api.get('/admin/consultarUsuarios', auth, userCtrl.getUsers);
+
+
+//////////////////////////////////////////////////////////////////
+// Test de Auth           								                  		//
+//////////////////////////////////////////////////////////////////
+
+api.get('/privateTest', auth, function(req,res){
+  res.send(req.user);
+});
 
 module.exports = api;

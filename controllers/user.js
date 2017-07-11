@@ -10,10 +10,11 @@
 
 // Importo los modulos necesarios
 const connection = require('../services/DB_connection');
+const config = require('../config');
 const jwt_services = require('../services/jwt_services');
 const uuidv4 = require('../services/uuid_services');
-const moment = require('moment'); // Libreria para el manejo de fechas
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 //////////////////////////////////////////////////////////////////
 //       Definicion de las funciones                            //
@@ -53,21 +54,32 @@ function signUp(req, res){
 			
 			}else{
 
-				// Si el usuario no esta en la base de datos, lo ingreso dentro de la BD
-				var query = connection.query('INSERT INTO user(email_user, password_user, signupDate_user, lastLogin_user, uuid_user) VALUES(?, ?, ?, ?, ?)', 
-								  [user.email, user.password, user.signupDate , user.lastLogin, user.UUID], function(err, rows) {
+				// Debo encriptar la contraseña
+				bcrypt.hash(user.password, config.saltRounds, function(err, hash) {
+					
+					// Verifico si hubo algun error en la encriptacion
+					if (err){
+						console.error({"Error encriptando" : err});
+						res.status(500).json({ "error" : err });	// Server Error	
+					}else{
+						// Guardo la contraseña encriptada 
+						// Si el usuario no esta en la base de datos, lo ingreso dentro de la BD
+						var query = connection.query('INSERT INTO user(email_user, password_user, signupDate_user, lastLogin_user, uuid_user) VALUES(?, ?, ?, ?, ?)', 
+								  [user.email, hash, user.signupDate , user.lastLogin, user.UUID], function(err, rows) {
 
-					// Verificar si sucedió un error durante la consulta
-					if (err)
-					{
-						console.error(err);
-						res.status(500).json({ "error" : err });	// Server Error		
-					}
-					else 
-					{
-						// En caso de éxito retorno los resultados de la entidad
-						res.status(200).json({ "token" : jwt_services.generateToken(user)} ); // ok
-					}
+							// Verificar si sucedió un error durante la consulta
+							if (err)
+							{
+								console.error(err);
+								res.status(500).json({ "error" : err });	// Server Error		
+							}
+							else 
+							{
+								// En caso de éxito retorno los resultados de la entidad
+								res.status(200).json({ "token" : jwt_services.generateToken(user)} ); // ok
+							}
+						});
+					}  
 				});
 			}
 		}
@@ -82,8 +94,10 @@ function signIn(req, res){
 	res.setHeader("Content-Type", "application/json");
 
 	// Consultar las entidades a la base de datos
-	var query = connection.query('SELECT id_user, uuid_user FROM user WHERE user.email_user = ? AND user.password_user = ?',
-								  [req.body.email_user, req.body.password_user], function(err, rows) {
+	// var query = connection.query('SELECT id_user, uuid_user FROM user WHERE user.email_user = ? AND user.password_user = ?',
+	// 							  [req.body.email_user, req.body.password_user], function(err, rows) {
+	var query = connection.query('SELECT id_user, password_user, uuid_user FROM user WHERE user.email_user = ?',
+	 							  [req.body.email_user], function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
 		if (err)
@@ -93,6 +107,7 @@ function signIn(req, res){
 		}
 		else 
 		{
+
 			// Reviso si el usuario y la contraseña fueron validos
 			if (rows.length == 0) {
 				console.error('El usuario y/o la contraseña no corresponden.');
@@ -103,27 +118,44 @@ function signIn(req, res){
 				// Creo un objeto para guardar el resultado de la consulta
 				var user = new User(rows[0].id_user, 
 									req.body.email_user,
-									null,
+									rows[0].password_user,
 									rows[0].uuid_user);
 
-				// Debo actualizar la fecha de ingreso en la base de datos
-				var updateLogin = connection.query('UPDATE user SET lastLogin_user = ? WHERE id_user = ?',
-													[user.lastLogin, user.id_user], function(err, rows){
-					
-					// Verifico si sucedio un error durante la consulta
-					if (err) {
-						console.error(err);
-						res.status(500).json({ "Error actualizando la fecha de login." : err });	// Server Error
+				// Debo traer el hash de la contraseña y compararlo con la funcion
+				bcrypt.compare(req.body.password_user, user.password, function(err, compare) {
+
+					// Reviso si hubo algun error
+					if (err){
+						console.error({"Error en la comparacion hash:" : err});
+						return res.status(500).json({ "Error en la comapracion con el hash." : err });	// Server Error
+					}
+
+					// Reviso el resultado de la comparacion
+					if(!compare){
+						// La contraseña no corresponde
+						console.error('El usuario y/o la contraseña no corresponden.');
+						res.status(404).json({"message": 'El usuario y/o la contraseña no corresponden.'});
 					}else{
 
-						// Puedo traer un usuario completo o solo el UUID
-						res.status(200).json({ "token" : jwt_services.generateToken(user)} ); // ok
+						// Debo actualizar la fecha de ingreso en la base de datos
+						var updateLogin = connection.query('UPDATE user SET lastLogin_user = ? WHERE id_user = ?',
+													[user.lastLogin, user.id_user], function(err, rows){
+					
+							// Verifico si sucedio un error durante la consulta
+							if (err) {
+								console.error(err);
+								res.status(500).json({ "Error actualizando la fecha de login." : err });	// Server Error
+							}else{
+
+								// Puedo traer un usuario completo o solo el UUID
+								res.status(200).json({ "token" : jwt_services.generateToken(user)} ); // ok
+							}
+						});
 					}
-				});
+	    		});
 			}
 		}
 	});
-
 }
 
 

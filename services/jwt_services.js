@@ -28,14 +28,42 @@ function generateToken(user){
     return jwt.sign(payLoad, config.SECRET_TOKEN);
 }
 
-module.exports = {generateToken};
+// Funcion para verificar y decodificar un Token
+function decodeToken (token){
 
-// try {
-//     var decoded = jwt.verify(token, config.SECRET_TOKEN);
-//     //var decoded = jwt.verify(token, 'pedro');
+    // Defino una promesa, creo que esto es para que se haga de manera asincrona al llamar la funcion.
+	const decode = new Promise((resolve, reject) => {
 
-// } catch (error) {
-//     console.log(error.message);
-// }
+		try{
+			// Hago una decodificacion
+			var payLoad = jwt.verify(token, config.SECRET_TOKEN);
 
-// console.log(decoded);
+			// Verifico si el Token no ha caducado
+			if (payLoad.exp <= moment().unix()) {
+
+				reject({
+					status: 401,
+					message: 'El token ha expirado'
+				})
+			} 
+
+			// Si llego hasta aqui significa que el token es valido
+			resolve(payLoad.sub)
+
+		} catch(err){
+			reject({
+				status: 500,
+				message: 'Invalid Token'
+			})
+		}
+	})
+
+	// Devuelvo la promesa creada
+	return decode;
+}
+
+
+module.exports = {
+    generateToken,
+    decodeToken
+    };
