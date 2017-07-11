@@ -38,7 +38,7 @@ function decodeToken (token){
 			// Hago una decodificacion
 			var payLoad = jwt.verify(token, config.SECRET_TOKEN);
 
-			console.log("Punto de Control");
+			console.log("Punto de Control Lin 41");
 
 			// Verifico si el Token no ha caducado
 			if (payLoad.exp <= moment().unix()) {
