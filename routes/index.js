@@ -65,7 +65,7 @@ api.get('/admin/consultarUsuarios', auth, userCtrl.getUsers);
 //////////////////////////////////////////////////////////////////
 
 api.get('/privateTest', auth, function(req,res){
-  res.send(req.user);
+  res.send({"Paquete" : req.user});
 });
 
 module.exports = api;
