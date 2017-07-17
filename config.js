@@ -11,6 +11,7 @@ module.exports = {
 		port: 3306
 		},
 	SECRET_TOKEN: 'miclavedetokens', 	// Se supone que sea mas complicada, puede ser un codigo generado
-	saltRounds : 10
+	saltRounds : 10,
+	expireDays : 14
 
 }

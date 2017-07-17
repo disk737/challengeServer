@@ -20,7 +20,7 @@ function generateToken(user){
     var payLoad = {
 		sub: user.UUID, // este es el UUID de la base de datos
 		iat: moment().unix(),    	// Cuando fue creado el Token
-		exp: moment().add(7, 'days').unix()		// Cuando expira el Token
+		exp: moment().add(config.expireDays, 'days').unix()		// Cuando expira el Token
         //exp: moment().add(1).unix()		// Cuando expira el Token
 	};
 
@@ -47,7 +47,7 @@ function decodeToken (token){
 			}
 
 		});	
-		
+
 	});
 
 	// Devuelvo la promesa creada
