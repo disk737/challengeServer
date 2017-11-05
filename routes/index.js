@@ -39,11 +39,11 @@ api.get('/leader/consultarReto', challengeCtrl.getChallenge);
 
 api.post('/leader/crearReto', challengeCtrl.setChallenge);
 
-api.get('/leader/consultarReto/:id_challenge', challengeCtrl.getChallengeById);
+api.get('/leader/consultarReto/:ChallengeID', challengeCtrl.getChallengeById);
 
-api.delete('/leader/EliminarReto/:id_challenge', challengeCtrl.deleteChallenge);
+api.delete('/leader/EliminarReto/:ChallengeID', challengeCtrl.deleteChallenge);
 
-api.put('/leader/EditarReto/:id_challenge', challengeCtrl.updateChallenge);
+api.put('/leader/EditarReto/:ChallengeID', challengeCtrl.updateChallenge);
 
 //////////////////////////////////////////////////////////////////
 // API del Users           								                  		//

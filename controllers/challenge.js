@@ -23,7 +23,7 @@ function getChallenge(req, res){
 	res.setHeader("Content-Type", "application/json");
 
 	// Consultar las entidades a la base de datos
-	var query = connection.query('SELECT * FROM challenge', 
+	var query = connection.query('SELECT * FROM Challenge', 
                                  function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
@@ -35,7 +35,7 @@ function getChallenge(req, res){
 		else 
 		{
 			// En caso de éxito y retorno los registros de la entidad
-			res.status(200).json({ "challenge" : rows });	// OK
+			res.status(200).json({ "Challenge" : rows });	// OK
 		}
 	});
 
@@ -49,8 +49,8 @@ function setChallenge(req, res){
 	res.setHeader("Content-Type", "application/json");
 
 	// Consultar las entidades a la base de datos
-	var query = connection.query('INSERT INTO challenge(name_challenge, descrip_challenge, eviden_challenge, point_challenge, due_challenge) VALUES(?, ?, ?, ?, ?)', 
-                                 [req.body.challenge.name_challenge, req.body.challenge.descrip_challenge, req.body.challenge.eviden_challenge , req.body.challenge.point_challenge, req.body.challenge.due_challenge], function(err, rows) {
+	var query = connection.query('INSERT INTO Challenge(ChallengeName, ChallengeDescription, ChallengeEvidence, ChallengePoint, ChallengeDueDate) VALUES(?, ?, ?, ?, ?)', 
+                                 [req.body.ChallengeName, req.body.ChallengeDescription, req.body.ChallengeEvidence , req.body.ChallengePoint, req.body.ChallengeDueDate], function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
 		if (err)
@@ -61,7 +61,7 @@ function setChallenge(req, res){
 		else 
 		{
 			// En caso de éxito retorno los registros de la entidad
-			res.status(200).json({ "challenge" : rows });	// OK
+			res.status(200).json({ "Challenge" : rows });	// OK
 		}
 	});
 };
@@ -74,8 +74,8 @@ function getChallengeById(req, res){
 	res.setHeader("Content-Type", "application/json");
 
 	// Consultar las entidades a la base de datos
-	var query = connection.query('SELECT * FROM challenge WHERE challenge.id_challenge = ?', 
-                                 [req.params.id_challenge], function(err, rows) {
+	var query = connection.query('SELECT * FROM Challenge WHERE Challenge.ChallengeID = ?', 
+                                 [req.params.ChallengeID], function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
 		if (err)
@@ -86,7 +86,7 @@ function getChallengeById(req, res){
 		else 
 		{
 			// En caso de éxito retorno los registros de la entidad
-			res.status(200).json({ "challenge" : rows });;	// OK
+			res.status(200).json({ "Challenge" : rows });;	// OK
 		}
 	});
 }
@@ -99,8 +99,8 @@ function deleteChallenge(req, res){
 	res.setHeader("Content-Type", "application/json");
  
     // Realizo la consulta
-    var query = connection.query('DELETE FROM challenge WHERE id_challenge = ?', 
-    								[req.params.id_challenge], function(err, rows){
+    var query = connection.query('DELETE FROM Challenge WHERE ChallengeID = ?', 
+    								[req.params.ChallengeID], function(err, rows){
         
         // Verificar si sucedió un error durante la consulta
 		if (err)
@@ -111,7 +111,7 @@ function deleteChallenge(req, res){
 		else 
 		{
 			// En caso de éxito y retorno los registros de la entidad
-			res.status(200).json({ "challenge" : rows });	// OK
+			res.status(200).json({ "Challenge" : rows });	// OK
 		}
     });
 }
@@ -124,8 +124,8 @@ function updateChallenge(req, res){
 	res.setHeader("Content-Type", "application/json");
  
     // Realizo la consulta
-    var query = connection.query('UPDATE challenge SET name_challenge = ?, descrip_challenge = ?, eviden_challenge = ?, point_challenge = ?, due_challenge = ?  WHERE id_challenge = ?', 
-    								[req.body.challenge.name_challenge, req.body.challenge.descrip_challenge, req.body.challenge.eviden_challenge , req.body.challenge.point_challenge, req.body.challenge.due_challenge, req.params.id_challenge], function(err, rows) {
+    var query = connection.query('UPDATE Challenge SET ChallengeName = ?, ChallengeDescription = ?, ChallengeEvidence = ?, ChallengePoint = ?, ChallengeDueDate = ?  WHERE ChallengeID = ?', 
+    								[req.body.ChallengeName, req.body.ChallengeDescription, req.body.ChallengeEvidence , req.body.ChallengePoint, req.body.ChallengeDueDate, req.params.ChallengeID], function(err, rows) {
         
         // Verificar si sucedió un error durante la consulta
 		if (err)
@@ -136,7 +136,7 @@ function updateChallenge(req, res){
 		else 
 		{
 			// En caso de éxito y retorno los registros de la entidad
-			res.status(200).json({ "challenge" : rows });	// OK
+			res.status(200).json({ "Challenge" : rows });	// OK
 		}
     });
 }
