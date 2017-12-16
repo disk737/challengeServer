@@ -86,7 +86,7 @@ function getChallengeById(req, res){
 		else 
 		{
 			// En caso de éxito retorno los registros de la entidad
-			res.status(200).json({ "Challenge" : rows });;	// OK
+			res.status(200).json({ "Challenge" : rows });	// OK
 		}
 	});
 }
