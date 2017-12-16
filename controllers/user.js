@@ -38,7 +38,7 @@ function signUp(req, res){
 	res.setHeader("Content-Type", "application/json");
 
 	// Se comprueba que el usuario no exista en la base de datos	
-	var checkUser = connection.query('SELECT id_user FROM user WHERE user.email_user = ?',
+	var checkUser = connection.query('SELECT UserID FROM user WHERE user.email_user = ?',
 								  [req.body.email_user], function(err, rows){
 
 		// Verificar si sucedió un error durante la consulta							
