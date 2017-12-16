@@ -30,16 +30,16 @@ function signUp(req, res){
 
 	// Puedo tomar un modelo y crearlo desde req.body y crear un constructor
 	var user = new User(null, 
-						req.body.email_user, 
-						req.body.password_user, 
+						req.body.UserEmail, 
+						req.body.UserPassword, 
 						uuidv4());
 
 	// Establecer el tipo MIME de la respuesta
 	res.setHeader("Content-Type", "application/json");
 
 	// Se comprueba que el usuario no exista en la base de datos	
-	var checkUser = connection.query('SELECT UserID FROM user WHERE user.email_user = ?',
-								  [req.body.email_user], function(err, rows){
+	var checkUser = connection.query('SELECT UserID FROM user WHERE user.UserEmail = ?',
+								  [req.body.UserEmail], function(err, rows){
 
 		// Verificar si sucedió un error durante la consulta							
 		if (err) {
@@ -64,7 +64,7 @@ function signUp(req, res){
 					}else{
 						// Guardo la contraseña encriptada 
 						// Si el usuario no esta en la base de datos, lo ingreso dentro de la BD
-						var query = connection.query('INSERT INTO user(email_user, password_user, signupDate_user, lastLogin_user, uuid_user) VALUES(?, ?, ?, ?, ?)', 
+						var query = connection.query('INSERT INTO user(UserEmail, UserPassword, UserSignupDate, UserLastLogin, UserUUID) VALUES(?, ?, ?, ?, ?)', 
 								  [user.email, hash, user.signupDate , user.lastLogin, user.UUID], function(err, rows) {
 
 							// Verificar si sucedió un error durante la consulta
