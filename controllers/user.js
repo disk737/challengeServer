@@ -134,7 +134,7 @@ function signIn(req, res){
 					if(!compare){
 						// La contraseña no corresponde
 						console.error('El usuario y/o la contraseña no corresponden.');
-						res.status(404).json({"message": 'El usuario y/o la contraseña no corresponden.', "Pass": req.body.UserPassword, "Hash":user.password});
+						res.status(404).json({"message": 'El usuario y/o la contraseña no corresponden.'});
 					}else{
 
 						// Debo actualizar la fecha de ingreso en la base de datos
