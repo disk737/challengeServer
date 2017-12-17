@@ -96,7 +96,7 @@ function signIn(req, res){
 	// Consultar las entidades a la base de datos
 	// var query = connection.query('SELECT id_user, uuid_user FROM user WHERE user.email_user = ? AND user.password_user = ?',
 	// 							  [req.body.email_user, req.body.password_user], function(err, rows) {
-	var query = connection.query('SELECT UserID, UserPassword, UserUUID FROM user WHERE User.UserEmail = ?',
+	var query = connection.query('SELECT UserID, UserPassword, UserUUID FROM User WHERE User.UserEmail = ?',
 	 							  [req.body.UserEmail], function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
@@ -138,7 +138,7 @@ function signIn(req, res){
 					}else{
 
 						// Debo actualizar la fecha de ingreso en la base de datos
-						var updateLogin = connection.query('UPDATE user SET UserLastLogin = ? WHERE UserID = ?',
+						var updateLogin = connection.query('UPDATE User SET UserLastLogin = ? WHERE UserID = ?',
 													[user.lastLogin, user.id_user], function(err, rows){
 					
 							// Verifico si sucedio un error durante la consulta
