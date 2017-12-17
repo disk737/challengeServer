@@ -38,7 +38,7 @@ function signUp(req, res){
 	res.setHeader("Content-Type", "application/json");
 
 	// Se comprueba que el usuario no exista en la base de datos	
-	var checkUser = connection.query('SELECT UserID FROM user WHERE user.UserEmail = ?',
+	var checkUser = connection.query('SELECT UserID FROM User WHERE user.UserEmail = ?',
 								  [req.body.UserEmail], function(err, rows){
 
 		// Verificar si sucedió un error durante la consulta							
@@ -64,7 +64,7 @@ function signUp(req, res){
 					}else{
 						// Guardo la contraseña encriptada 
 						// Si el usuario no esta en la base de datos, lo ingreso dentro de la BD
-						var query = connection.query('INSERT INTO user(UserEmail, UserPassword, UserSignupDate, UserLastLogin, UserUUID) VALUES(?, ?, ?, ?, ?)', 
+						var query = connection.query('INSERT INTO User(UserEmail, UserPassword, UserSignupDate, UserLastLogin, UserUUID) VALUES(?, ?, ?, ?, ?)', 
 								  [user.email, hash, user.signupDate , user.lastLogin, user.UUID], function(err, rows) {
 
 							// Verificar si sucedió un error durante la consulta
@@ -96,8 +96,8 @@ function signIn(req, res){
 	// Consultar las entidades a la base de datos
 	// var query = connection.query('SELECT id_user, uuid_user FROM user WHERE user.email_user = ? AND user.password_user = ?',
 	// 							  [req.body.email_user, req.body.password_user], function(err, rows) {
-	var query = connection.query('SELECT id_user, password_user, uuid_user FROM user WHERE user.email_user = ?',
-	 							  [req.body.email_user], function(err, rows) {
+	var query = connection.query('SELECT UserID, UserPassword, UserUUID FROM user WHERE User.UserEmail = ?',
+	 							  [req.body.UserEmail], function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
 		if (err)
@@ -116,13 +116,13 @@ function signIn(req, res){
 			}else{
 				
 				// Creo un objeto para guardar el resultado de la consulta
-				var user = new User(rows[0].id_user, 
-									req.body.email_user,
-									rows[0].password_user,
-									rows[0].uuid_user);
+				var user = new User(rows[0].UserID, 
+									req.body.UserEmail,
+									rows[0].UserPassword,
+									rows[0].UserUUID);
 
 				// Debo traer el hash de la contraseña y compararlo con la funcion
-				bcrypt.compare(req.body.password_user, user.password, function(err, compare) {
+				bcrypt.compare(req.body.UserPassword, user.password, function(err, compare) {
 
 					// Reviso si hubo algun error
 					if (err){
@@ -138,7 +138,7 @@ function signIn(req, res){
 					}else{
 
 						// Debo actualizar la fecha de ingreso en la base de datos
-						var updateLogin = connection.query('UPDATE user SET lastLogin_user = ? WHERE id_user = ?',
+						var updateLogin = connection.query('UPDATE user SET UserLastLogin = ? WHERE UserID = ?',
 													[user.lastLogin, user.id_user], function(err, rows){
 					
 							// Verifico si sucedio un error durante la consulta
