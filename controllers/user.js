@@ -158,6 +158,32 @@ function signIn(req, res){
 	});
 }
 
+// GET: Se consulta el usuario en especifico que es el propietario del Token.
+function getUsers(req, res){
+    console.log('GET: Consultando la informacion del usuario ...');
+
+	// Establecer el tipo MIME de la respuesta
+	res.setHeader("Content-Type", "application/json");
+
+	// Consultar las entidades a la base de datos
+	var query = connection.query('SELECT * FROM user', 
+                                 function(err, rows) {
+
+		// Verificar si sucedió un error durante la consulta
+		if (err)
+		{
+			console.error(err);
+			res.status(500).json({ "error" : err });;	// Server Error
+		}
+		else 
+		{
+			// En caso de éxito retorno los registro de la entidad (user)
+			res.status(200).json({ "user" : rows });	// OK
+		}
+	});
+
+};
+
 
 //////////////////////////////////////////////////////////////////
 // Metodos del Admin           								  	//
