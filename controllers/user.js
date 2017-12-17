@@ -127,14 +127,14 @@ function signIn(req, res){
 					// Reviso si hubo algun error
 					if (err){
 						console.error({"Error en la comparacion hash:" : err});
-						return res.status(500).json({ "Error en la comapracion con el hash." : err });	// Server Error
+						return res.status(500).json({ "Error en la comparacion con el hash." : err });	// Server Error
 					}
 
 					// Reviso el resultado de la comparacion
 					if(!compare){
 						// La contraseña no corresponde
 						console.error('El usuario y/o la contraseña no corresponden.');
-						res.status(404).json({"message": 'El usuario y/o la contraseña no corresponden.'});
+						res.status(404).json({"message": 'El usuario y/o la contraseña no corresponden.', "Pass": req.body.UserPassword});
 					}else{
 
 						// Debo actualizar la fecha de ingreso en la base de datos
