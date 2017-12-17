@@ -111,7 +111,7 @@ function signIn(req, res){
 			// Reviso si el usuario y la contraseña fueron validos
 			if (rows.length == 0) {
 				console.error('El usuario no existe en la BD.');
-				res.status(404).json({"message": 'El usuario no existe en la BD.'});
+				res.status(404).json({"message": 'El usuario no existe en la BD.', "usuario": req.body.UserEmail});
 			
 			}else{
 				
