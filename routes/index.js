@@ -53,11 +53,13 @@ api.post('/user/crearUsuario', userCtrl.signUp);
 
 api.post('/user/ingresarUsuario', userCtrl.signIn);
 
+api.get('/user/obtenerPuntosUser', auth, userCtrl.getUserPoint);
+
 //////////////////////////////////////////////////////////////////
 // API del Admin           								                  		//
 //////////////////////////////////////////////////////////////////
 
-api.get('/admin/consultarUsuarios', auth, userCtrl.getUsers);
+api.get('/admin/consultarUsuarios', userCtrl.getUsers);
 
 
 //////////////////////////////////////////////////////////////////

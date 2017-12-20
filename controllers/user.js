@@ -38,7 +38,7 @@ function signUp(req, res){
 	res.setHeader("Content-Type", "application/json");
 
 	// Se comprueba que el usuario no exista en la base de datos	
-	var checkUser = connection.query('SELECT UserID FROM User WHERE User.UserEmail = ?',
+	var checkUser = connection.query('SELECT UserID FROM UserData WHERE UserData.UserEmail = ?',
 								  [req.body.UserEmail], function(err, rows){
 
 		// Verificar si sucedió un error durante la consulta							
@@ -64,7 +64,7 @@ function signUp(req, res){
 					}else{
 						// Guardo la contraseña encriptada 
 						// Si el usuario no esta en la base de datos, lo ingreso dentro de la BD
-						var query = connection.query('INSERT INTO User(UserEmail, UserPassword, UserSignupDate, UserLastLogin, UserUUID) VALUES(?, ?, ?, ?, ?)', 
+						var query = connection.query('INSERT INTO UserData(UserEmail, UserPassword, UserSignupDate, UserLastLogin, UserUUID) VALUES(?, ?, ?, ?, ?)', 
 								  [user.email, hash, user.signupDate , user.lastLogin, user.UUID], function(err, rows) {
 
 							// Verificar si sucedió un error durante la consulta
@@ -96,7 +96,7 @@ function signIn(req, res){
 	// Consultar las entidades a la base de datos
 	// var query = connection.query('SELECT id_user, uuid_user FROM user WHERE user.email_user = ? AND user.password_user = ?',
 	// 							  [req.body.email_user, req.body.password_user], function(err, rows) {
-	var query = connection.query('SELECT UserID, UserPassword, UserUUID FROM User WHERE User.UserEmail = ?',
+	var query = connection.query('SELECT UserID, UserPassword, UserUUID FROM UserData WHERE UserData.UserEmail = ?',
 	 							  [req.body.UserEmail], function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
@@ -138,7 +138,7 @@ function signIn(req, res){
 					}else{
 
 						// Debo actualizar la fecha de ingreso en la base de datos
-						var updateLogin = connection.query('UPDATE User SET UserLastLogin = ? WHERE UserID = ?',
+						var updateLogin = connection.query('UPDATE UserData SET UserLastLogin = ? WHERE UserID = ?',
 													[user.lastLogin, user.id_user], function(err, rows){
 					
 							// Verifico si sucedio un error durante la consulta
@@ -159,15 +159,18 @@ function signIn(req, res){
 }
 
 // GET: Se consulta el usuario en especifico que es el propietario del Token.
-function getUsers(req, res){
+function getUserPoint(req, res){
     console.log('GET: Consultando la informacion del usuario ...');
 
 	// Establecer el tipo MIME de la respuesta
 	res.setHeader("Content-Type", "application/json");
 
+
+	// AQUI VOY!!!!
+
 	// Consultar las entidades a la base de datos
-	var query = connection.query('SELECT * FROM user', 
-                                 function(err, rows) {
+	var query = connection.query('SELECT UserPoints FROM UserData WHERE UserData.UserUUID = ?', 
+                                 [req.user], function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
 		if (err)
@@ -197,7 +200,7 @@ function getUsers(req, res){
 	res.setHeader("Content-Type", "application/json");
 
 	// Consultar las entidades a la base de datos
-	var query = connection.query('SELECT * FROM user', 
+	var query = connection.query('SELECT * FROM UserData', 
                                  function(err, rows) {
 
 		// Verificar si sucedió un error durante la consulta
@@ -218,6 +221,7 @@ function getUsers(req, res){
 module.exports = {
     signUp,
 	signIn,
+	getUserPoint,
 	getUsers
 }
 
