@@ -160,14 +160,11 @@ function signIn(req, res){
 
 // GET: Se consulta el usuario en especifico que es el propietario del Token.
 function getUserPoint(req, res){
-    console.log('GET: Consultando la informacion del usuario ...');
+    console.log('GET: Consultando los puntos de un usuario ...');
 
 	// Establecer el tipo MIME de la respuesta
 	res.setHeader("Content-Type", "application/json");
-
-
-	// AQUI VOY!!!!
-
+	
 	// Consultar las entidades a la base de datos
 	var query = connection.query('SELECT UserPoints FROM UserData WHERE UserData.UserUUID = ?', 
                                  [req.user], function(err, rows) {
