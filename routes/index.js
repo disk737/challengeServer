@@ -57,6 +57,8 @@ api.get('/user/obtenerPuntosUser', auth, userCtrl.getUserPoint);
 
 api.post('/user/aceptarReto', auth, userCtrl.acceptChallenge);
 
+api.get('/user/consultarReto', auth, userCtrl.getUserChallenges);
+
 //////////////////////////////////////////////////////////////////
 // API del Admin           								                  		//
 //////////////////////////////////////////////////////////////////
