@@ -184,6 +184,44 @@ function getUserPoint(req, res){
 
 };
 
+// POST: Se acepta un reto dentro de la aplicacion.
+function acceptChallenge(req, res){
+    console.log('POST: Se acepta un reto dentro de la aplicacion ...');
+
+	// Establecer el tipo MIME de la respuesta
+	res.setHeader("Content-Type", "application/json");
+	
+	// Consultar las entidades a la base de datos
+	var queryGet = connection.query('SELECT UserID FROM UserData WHERE UserData.UserUUID = ?', 
+                                 [req.user], function(err1, rows1) {
+
+		// Verificar si sucedió un error durante la consulta
+		if (err1){
+			console.error(err1);
+			res.status(500).json({ "error" : err1 });	// Server Error
+		}
+		else{
+			// En caso de éxito retorno los registro de la entidad (user)
+			//res.status(200).json({ "user" : rows });	// OK
+
+			// Realizo la consulta encargado de realizar el registro
+			var queryPost = connection.query('INSERT INTO RelUserChallenge(UserID, ChallengeID) VALUES (?, ?)',[rows1[0].UserID ,req.body.ChallengeID], function(err2, rows2){
+
+				// Verifico si sucedió un error durante la consulta
+				if(err2){
+					console.error(err2);
+					res.status(500).json({"error" : err2});
+				}
+				else{
+					// En caso de ser exitoso retorno la confirmacion del ingreso del registro
+					res.status(200).json({"user" : rows2});
+				}
+
+			});
+		}
+	});
+};
+
 
 //////////////////////////////////////////////////////////////////
 // Metodos del Admin           								  	//
@@ -219,7 +257,8 @@ module.exports = {
     signUp,
 	signIn,
 	getUserPoint,
-	getUsers
+	getUsers,
+	acceptChallenge
 }
 
 
