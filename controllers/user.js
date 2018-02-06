@@ -247,7 +247,7 @@ function getUserChallenges(req, res){
 				}
 				else{
 					// En caso de ser exitoso retorno la confirmacion del ingreso del registro
-					res.status(200).json({"User" : rows2});
+					res.status(200).json({"Challenge" : rows2});
 				}
 
 			});
