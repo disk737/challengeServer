@@ -184,78 +184,6 @@ function getUserPoint(req, res){
 
 };
 
-// POST: Se acepta un reto dentro de la aplicacion.
-function acceptChallenge(req, res){
-    console.log('POST: Se acepta un reto dentro de la aplicacion ...');
-
-	// Establecer el tipo MIME de la respuesta
-	res.setHeader("Content-Type", "application/json");
-	
-	// Consultar las entidades a la base de datos
-	var queryGet = connection.query('SELECT UserID FROM UserData WHERE UserData.UserUUID = ?', 
-                                 [req.user], function(err1, rows1) {
-
-		// Verificar si sucedió un error durante la consulta
-		if (err1){
-			console.error(err1);
-			res.status(500).json({ "error" : err1 });	// Server Error
-		}
-		else{
-			// Realizo la consulta encargado de realizar el registro
-			var queryPost = connection.query('INSERT INTO RelUserChallenge(UserID, ChallengeID) VALUES (?, ?)',
-											[rows1[0].UserID ,req.body.ChallengeID], function(err2, rows2){
-
-				// Verifico si sucedio un error durante la consulta
-				if(err2){
-					console.error(err2);
-					res.status(500).json({"error" : err2});
-				}
-				else{
-					// En caso de ser exitoso retorno la confirmacion del ingreso del registro
-					res.status(200).json({"User" : rows2});
-				}
-
-			});
-		}
-	});
-};
-
-// GET: Consulto una lista de todos los retos que acepto un usuario
-function getUserChallenges(req, res){
-	console.log('GET: Se consultan todos los retos aceptados por un usuario...');
-
-	// Establecer el tipo MIME de la respuesta
-	res.setHeader("Content-Type", "application/json");
-
-	var queryGetUser = connection.query('SELECT UserID FROM UserData WHERE UserData.UserUUID = ?',
-										[req.user], function(err1, rows1){
-
-		// Verifico si sucedio un error durante la consulta
-		if(err1){
-			console.error(err1);
-			res.status(500).json({"error" : err1});
-		}
-		else{
-			// Realizo la consulta encargada de retorna la lista de retos aceptados por el usuario
-			var queryGetChallenge = connection.query('SELECT Challenge.ChallengeID, Challenge.ChallengeName, Challenge.ChallengeDescription, Challenge.ChallengeEvidence, Challenge.ChallengePoint, Challenge.ChallengeDueDate FROM Challenge INNER JOIN RelUserChallenge ON Challenge.challengeID = RelUserChallenge.ChallengeID WHERE RelUserChallenge.UserID = ?',
-													[rows1[0].UserID], function(err2, rows2){
-
-				// Verifico si sucedio un error durante la consulta
-				if(err2){
-					console.error(err2);
-					res.status(500).json({"error" : err2});
-				}
-				else{
-					// En caso de ser exitoso retorno la confirmacion del ingreso del registro
-					res.status(200).json({"Challenge" : rows2});
-				}
-
-			});
-		}
-	});
-}
-
-
 //////////////////////////////////////////////////////////////////
 // Metodos del Admin           								  	//
 //////////////////////////////////////////////////////////////////
@@ -291,8 +219,6 @@ module.exports = {
 	signIn,
 	getUserPoint,
 	getUsers,
-	acceptChallenge,
-	getUserChallenges
 }
 
 
