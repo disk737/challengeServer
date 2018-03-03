@@ -45,10 +45,6 @@ api.delete('/leader/EliminarReto/:ChallengeID', challengeCtrl.deleteChallenge);
 
 api.put('/leader/EditarReto/:ChallengeID', challengeCtrl.updateChallenge);
 
-api.post('/user/aceptarReto', auth, challengeCtrl.acceptChallenge);
-
-api.get('/user/consultarReto', auth, challengeCtrl.getUserChallenges);
-
 //////////////////////////////////////////////////////////////////
 // API del Users           								                  		//
 //////////////////////////////////////////////////////////////////
@@ -58,6 +54,12 @@ api.post('/user/crearUsuario', userCtrl.signUp);
 api.post('/user/ingresarUsuario', userCtrl.signIn);
 
 api.get('/user/obtenerPuntosUser', auth, userCtrl.getUserPoint);
+
+api.post('/user/aceptarReto', auth, challengeCtrl.acceptChallenge);
+
+api.get('/user/consultarReto', auth, challengeCtrl.getUserChallenges);
+
+api.get('/user/consultarTotalRetos', auth, challengeCtrl.getUserNoChallenges);
 
 //////////////////////////////////////////////////////////////////
 // API del Admin           								                  		//

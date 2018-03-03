@@ -212,6 +212,42 @@ function getUserChallenges(req, res){
 	});
 }
 
+// GET: Consulto una lista de todos los retos que NO acepto un usuario
+function getUserNoChallenges(req, res){
+	console.log('GET: Se consultan todos los retos que no han sido aceptados por un usuario...');
+
+	// Establecer el tipo MIME de la respuesta
+	res.setHeader("Content-Type", "application/json");
+
+	var queryGetUser = connection.query('SELECT UserID FROM UserData WHERE UserData.UserUUID = ?',
+										[req.user], function(err1, rows1){
+
+		// Verifico si sucedio un error durante la consulta
+		if(err1){
+			console.error(err1);
+			res.status(500).json({"error" : err1});
+		}
+		else{
+			// Realizo la consulta encargada de retorna la lista de retos aceptados por el usuario
+			var queryGetChallenge = connection.query('SELECT Challenge.ChallengeID, Challenge.ChallengeName, Challenge.ChallengeDescription, Challenge.ChallengeEvidence, Challenge.ChallengePoint, Challenge.ChallengeDueDate FROM Challenge WHERE Challenge.ChallengeID NOT IN (SELECT Challenge.ChallengeID FROM Challenge INNER JOIN RelUserChallenge ON RelUserChallenge.ChallengeID = Challenge.ChallengeID WHERE RelUserChallenge.UserID = ?)',
+													[rows1[0].UserID], function(err2, rows2){
+
+				// Verifico si sucedio un error durante la consulta
+				if(err2){
+					console.error(err2);
+					res.status(500).json({"error" : err2});
+				}
+				else{
+					// En caso de ser exitoso retorno la confirmacion del ingreso del registro
+					res.status(200).json({"Challenge" : rows2});
+				}
+
+			});
+		}
+	});
+}
+
+
 module.exports = {
     getChallenge,
     setChallenge,
@@ -219,5 +255,6 @@ module.exports = {
     deleteChallenge,
 	updateChallenge,
 	acceptChallenge,
-	getUserChallenges
+	getUserChallenges,
+	getUserNoChallenges
 }
