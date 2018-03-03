@@ -59,7 +59,7 @@ api.post('/user/aceptarReto', auth, challengeCtrl.acceptChallenge);
 
 api.get('/user/consultarReto', auth, challengeCtrl.getUserChallenges);
 
-api.get('/user/consultarTotalRetos', auth, challengeCtrl.getUserNoChallenges);
+api.get('/user/consultarOtrosRetos', auth, challengeCtrl.getUserNoChallenges);
 
 //////////////////////////////////////////////////////////////////
 // API del Admin           								                  		//
