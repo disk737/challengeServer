@@ -177,6 +177,43 @@ function acceptChallenge(req, res){
 	});
 };
 
+// DEL: Se acepta un reto dentro de la aplicacion.
+function quitChallenge(req, res){
+    console.log('DEL: Se renuncia a un reto dentro de la aplicacion ...');
+
+	// Establecer el tipo MIME de la respuesta
+	res.setHeader("Content-Type", "application/json");
+	
+	// Consultar las entidades a la base de datos
+	var queryGet = connection.query('SELECT UserID FROM UserData WHERE UserData.UserUUID = ?', 
+                                 [req.user], function(err1, rows1) {
+
+		// Verificar si sucedió un error durante la consulta
+		if (err1){
+			console.error(err1);
+			res.status(500).json({ "error" : err1 });	// Server Error
+		}
+		else{
+			// Realizo la consulta encargado de realizar el registro
+			var queryDel = connection.query('DELETE FROM RelUserChallenge WHERE UserID = ? AND ChallengeID = ?',
+											[rows1[0].UserID ,req.body.ChallengeID], function(err2, rows2){
+
+				// Verifico si sucedio un error durante la consulta
+				if(err2){
+					console.error(err2);
+					res.status(500).json({"error" : err2});
+				}
+				else{
+					// En caso de ser exitoso retorno la confirmacion del ingreso del registro
+					res.status(200).json({"User" : rows2});
+				}
+
+			});
+		}
+	});
+};
+
+
 // GET: Consulto una lista de todos los retos que acepto un usuario
 function getUserChallenges(req, res){
 	console.log('GET: Se consultan todos los retos aceptados por un usuario...');
@@ -255,6 +292,7 @@ module.exports = {
     deleteChallenge,
 	updateChallenge,
 	acceptChallenge,
+	quitChallenge,
 	getUserChallenges,
 	getUserNoChallenges
 }
