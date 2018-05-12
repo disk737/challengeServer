@@ -196,7 +196,7 @@ function quitChallenge(req, res){
 		else{
 			// Realizo la consulta encargado de realizar el registro
 			var queryDel = connection.query('DELETE FROM RelUserChallenge WHERE UserID = ? AND ChallengeID = ?',
-											[rows1[0].UserID ,req.body.ChallengeID], function(err2, rows2){
+											[rows1[0].UserID ,req.params.ChallengeID], function(err2, rows2){
 
 				// Verifico si sucedio un error durante la consulta
 				if(err2){

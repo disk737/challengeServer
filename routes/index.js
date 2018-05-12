@@ -57,7 +57,7 @@ api.get('/user/obtenerPuntosUser', auth, userCtrl.getUserPoint);
 
 api.post('/user/aceptarReto', auth, challengeCtrl.acceptChallenge);
 
-api.delete('/user/renunciarReto', auth, challengeCtrl.quitChallenge);
+api.delete('/user/renunciarReto/:ChallengeID', auth, challengeCtrl.quitChallenge);
 
 api.get('/user/consultarRetos', auth, challengeCtrl.getUserChallenges);
 
