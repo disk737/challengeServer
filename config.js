@@ -12,6 +12,6 @@ module.exports = {
 		},
 	SECRET_TOKEN: 'miclavedetokens', 	// Se supone que sea mas complicada, puede ser un codigo generado
 	saltRounds : 10,
-	expireDays : 14
+	expireDays : 365
 
 }
